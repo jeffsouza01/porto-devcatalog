@@ -1,6 +1,13 @@
 package com.porto.devcatalog.Porto.entities;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "tb_category")
 public class Category {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
