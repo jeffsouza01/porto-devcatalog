@@ -1,0 +1,25 @@
+package com.porto.devcatalog.Porto.controllers.exceptions;
+
+import com.porto.devcatalog.Porto.services.exceptions.EntityNotFoundExceptions;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.time.Instant;
+
+@ControllerAdvice
+public class ResourceExceptionHandler {
+
+    @ExceptionHandler(EntityNotFoundExceptions.class)
+    public StandardError entityNotFound(EntityNotFoundExceptions e, HttpServletRequest request) {
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.NOT_FOUND.value());
+        err.setError("Item Not Found");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+
+        return err;
+    }
+}

@@ -3,6 +3,7 @@ package com.porto.devcatalog.Porto.services;
 import com.porto.devcatalog.Porto.DTO.CategoryDTO;
 import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.repositories.CategoryRepository;
+import com.porto.devcatalog.Porto.services.exceptions.EntityNotFoundExceptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,15 @@ public class CategoryService {
         return categories.stream().map(x-> new CategoryDTO(x)).toList();
     }
 
+
+    @Transactional(readOnly = true)
+    public CategoryDTO findCategoriesById(Long id) {
+        Category category = categoryRepository.findById(id)
+            .orElseThrow(()-> new EntityNotFoundExceptions("Item not found!"));
+
+
+        return new CategoryDTO(category);
+    }
 
 
 }
