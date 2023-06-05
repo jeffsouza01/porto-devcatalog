@@ -3,9 +3,14 @@ package com.porto.devcatalog.Porto.services;
 import com.porto.devcatalog.Porto.DTO.CategoryDTO;
 import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.repositories.CategoryRepository;
+import com.porto.devcatalog.Porto.services.exceptions.DatabaseException;
 import com.porto.devcatalog.Porto.services.exceptions.ResourceNotFoundExceptions;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +23,10 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAllCategories() {
-        List<Category> categories = categoryRepository.findAll();
+    public Page<CategoryDTO> findAllCategories(PageRequest pageRequest) {
+        Page<Category> categories = categoryRepository.findAll(pageRequest);
 
-        return categories.stream().map(x-> new CategoryDTO(x)).toList();
+        return categories.map(x-> new CategoryDTO(x));
     }
 
 
@@ -55,6 +60,20 @@ public class CategoryService {
             return new CategoryDTO(category);
         } catch (EntityNotFoundException err) {
             throw new ResourceNotFoundExceptions("Category not found with ID: " + id);
+        }
+
+    }
+
+
+    @Transactional
+    public void deleteCategory(Long id){
+        try {
+            categoryRepository.deleteById(id);
+
+        } catch (EmptyResultDataAccessException err) {
+            throw new ResourceNotFoundExceptions("Id not found " + id);
+        } catch (DataIntegrityViolationException err) {
+            throw new DatabaseException("Error Database Integration");
         }
 
     }
