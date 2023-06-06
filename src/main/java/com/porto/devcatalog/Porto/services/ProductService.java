@@ -1,7 +1,10 @@
 package com.porto.devcatalog.Porto.services;
 
+import com.porto.devcatalog.Porto.DTO.CategoryDTO;
 import com.porto.devcatalog.Porto.DTO.ProductDTO;
+import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.entities.Product;
+import com.porto.devcatalog.Porto.repositories.CategoryRepository;
 import com.porto.devcatalog.Porto.repositories.ProductRepository;
 import com.porto.devcatalog.Porto.services.exceptions.DatabaseException;
 import com.porto.devcatalog.Porto.services.exceptions.ResourceNotFoundExceptions;
@@ -19,6 +22,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAllCategories(PageRequest pageRequest) {
@@ -41,21 +47,25 @@ public class ProductService {
     @Transactional
     public ProductDTO createProduct(ProductDTO productDTO){
         Product product = new Product();
-        product.setName(productDTO.getName());
+        copyDTO2Entity(productDTO, product);
+
         product = productRepository.save(product);
 
-        return new ProductDTO(product);
+        return new ProductDTO(product, product.getCategories());
     }
 
+
+
     @Transactional
-    public ProductDTO updateProduct(Long id, ProductDTO dto) {
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
 
         try {
             Product product = productRepository.getReferenceById(id);
-            product.setName(dto.getName());
+            copyDTO2Entity(productDTO, product);
+
             product = productRepository.save(product);
 
-            return new ProductDTO(product);
+            return new ProductDTO(product, product.getCategories());
         } catch (EntityNotFoundException err) {
             throw new ResourceNotFoundExceptions("Product not found with ID: " + id);
         }
@@ -75,4 +85,21 @@ public class ProductService {
         }
 
     }
+
+    private void copyDTO2Entity(ProductDTO productDTO, Product product) {
+
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setImgUrl(productDTO.getImgUrl());
+        product.setDate(productDTO.getDate());
+
+        product.getCategories().clear();
+
+        for (CategoryDTO catDTO : productDTO.getCategories()) {
+            Category category = categoryRepository.getReferenceById(catDTO.getId());
+            product.getCategories().add(category);
+        }
+    }
+
 }

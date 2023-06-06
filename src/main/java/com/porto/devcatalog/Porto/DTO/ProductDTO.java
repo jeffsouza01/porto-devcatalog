@@ -3,6 +3,7 @@ package com.porto.devcatalog.Porto.DTO;
 import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.entities.Product;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +14,7 @@ public class ProductDTO {
     private String description;
     private Double price;
     private String imgUrl;
+    private Instant date;
 
     private List<CategoryDTO> categories = new ArrayList<>();
 
@@ -20,12 +22,13 @@ public class ProductDTO {
 
     }
 
-    public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
+    public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+        this.date = date;
     }
 
     public ProductDTO(Product product) {
@@ -34,6 +37,7 @@ public class ProductDTO {
         description = product.getDescription();
         price = product.getPrice();
         imgUrl = product.getImgUrl();
+        date = product.getDate();
     }
 
     public ProductDTO(Product product, Set<Category> categories) {
@@ -79,6 +83,14 @@ public class ProductDTO {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Instant getDate() {
+        return date;
+    }
+
+    public void setDate(Instant date) {
+        this.date = date;
     }
 
     public List<CategoryDTO> getCategories() {
