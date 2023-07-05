@@ -27,7 +27,7 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAllCategories(Pageable pageable) {
+    public Page<ProductDTO> findAllProducts(Pageable pageable) {
         Page<Product> categories = productRepository.findAll(pageable);
 
         return categories.map(x-> new ProductDTO(x));
@@ -35,7 +35,7 @@ public class ProductService {
 
 
     @Transactional(readOnly = true)
-    public ProductDTO findCategoriesById(Long id) {
+    public ProductDTO findProductById(Long id) {
         Product product = productRepository.findById(id)
             .orElseThrow(()-> new ResourceNotFoundExceptions("Item not found!"));
 
@@ -73,14 +73,15 @@ public class ProductService {
     }
 
 
-    @Transactional
     public void deleteProduct(Long id){
         try {
             productRepository.deleteById(id);
 
-        } catch (EmptyResultDataAccessException err) {
+        } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundExceptions("Id not found " + id);
-        } catch (DataIntegrityViolationException err) {
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundExceptions("Id not found " + id);
+        } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Error Database Integration");
         }
 

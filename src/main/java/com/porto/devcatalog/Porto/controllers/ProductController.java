@@ -19,14 +19,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
     @GetMapping
-    public Page<ProductDTO> findAllCategories(Pageable page){
+    public Page<ProductDTO> findAllProducts(Pageable page){
 
-        return productService.findAllCategories(page);
+        return productService.findAllProducts(page);
     }
 
     @GetMapping("/{id}")
     public ProductDTO findProductById(@PathVariable Long id){
-        return productService.findCategoriesById(id);
+        return productService.findProductById(id);
     }
 
 
@@ -47,8 +47,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    public String deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
+        return "Produto deletado com sucesso";
     }
 
 
