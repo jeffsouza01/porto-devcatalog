@@ -98,8 +98,8 @@ public class ProductService {
         product.getCategories().clear();
 
         for (CategoryDTO catDTO : productDTO.getCategories()) {
-            Category category = categoryRepository.getReferenceById(catDTO.getId());
-            product.getCategories().add(category);
+//            Category category = categoryRepository.getReferenceById(catDTO.getId());
+            product.getCategories().add(new Category(catDTO.getId(), catDTO.getName()));
         }
     }
 
