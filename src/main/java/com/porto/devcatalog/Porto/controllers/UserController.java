@@ -3,6 +3,7 @@ package com.porto.devcatalog.Porto.controllers;
 import com.porto.devcatalog.Porto.DTO.UserCreateDTO;
 import com.porto.devcatalog.Porto.DTO.UserDTO;
 import com.porto.devcatalog.Porto.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +33,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserDTO> insertNewUser(@RequestBody UserCreateDTO dto) {
+    public ResponseEntity<UserDTO> insertNewUser(@Valid @RequestBody UserCreateDTO dto) {
         UserDTO newDto = userService.createUser(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newDto.getId()).toUri();
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO dto) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTO dto) {
         dto = userService.updateUser(id, dto);
 
         return ResponseEntity.ok().body(dto);

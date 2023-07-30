@@ -1,6 +1,8 @@
 package com.porto.devcatalog.Porto.DTO;
 
 import com.porto.devcatalog.Porto.entities.User;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,8 +10,11 @@ import java.util.Set;
 public class UserDTO {
 
     private Long id;
+
+    @NotBlank(message = "Camp Required")
     private String firstName;
     private String lastName;
+    @Email(message = "Must be valid email")
     private String email;
 
     Set<RoleDTO> roles = new HashSet<>();
