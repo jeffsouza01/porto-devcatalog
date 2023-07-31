@@ -2,10 +2,7 @@ package com.porto.devcatalog.Porto.DTO;
 
 import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.entities.Product;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -22,6 +19,7 @@ public class ProductDTO {
     private String description;
 
     @Positive(message = "Price must be positive value")
+    @NotNull
     private Double price;
     private String imgUrl;
 
