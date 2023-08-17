@@ -1,5 +1,8 @@
 package com.porto.devcatalog.Porto.DTO;
 
+import com.porto.devcatalog.Porto.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserCreateDTO extends UserDTO {
 
     private String password;
