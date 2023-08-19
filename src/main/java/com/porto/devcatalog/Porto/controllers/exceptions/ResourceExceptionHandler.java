@@ -45,6 +45,7 @@ public class ResourceExceptionHandler {
     public ResponseEntity<ValidationError> validationError(MethodArgumentNotValidException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ValidationError err = new ValidationError();
+
         err.setTimestamp(Instant.now());
         err.setStatus(status.value());
         err.setError("Validation Exception");
