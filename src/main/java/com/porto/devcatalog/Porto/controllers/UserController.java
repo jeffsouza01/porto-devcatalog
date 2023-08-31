@@ -2,12 +2,12 @@ package com.porto.devcatalog.Porto.controllers;
 
 import com.porto.devcatalog.Porto.DTO.UserCreateDTO;
 import com.porto.devcatalog.Porto.DTO.UserDTO;
+import com.porto.devcatalog.Porto.DTO.UserUpdateDTO;
 import com.porto.devcatalog.Porto.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -42,10 +42,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTO dto) {
-        dto = userService.updateUser(id, dto);
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO dto) {
+        UserDTO newDto = userService.updateUser(id, dto);
 
-        return ResponseEntity.ok().body(dto);
+        return ResponseEntity.ok().body(newDto);
     }
 
     @DeleteMapping("/{id}")

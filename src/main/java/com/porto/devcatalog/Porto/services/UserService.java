@@ -3,6 +3,7 @@ package com.porto.devcatalog.Porto.services;
 import com.porto.devcatalog.Porto.DTO.RoleDTO;
 import com.porto.devcatalog.Porto.DTO.UserCreateDTO;
 import com.porto.devcatalog.Porto.DTO.UserDTO;
+import com.porto.devcatalog.Porto.DTO.UserUpdateDTO;
 import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.entities.Role;
 import com.porto.devcatalog.Porto.entities.User;
@@ -59,7 +60,7 @@ public class UserService {
 
 
     @Transactional
-    public UserDTO updateUser(Long id, UserDTO userDTO) {
+    public UserDTO updateUser(Long id, UserUpdateDTO userDTO) {
 
         try {
             User user = userRepository.getReferenceById(id);
