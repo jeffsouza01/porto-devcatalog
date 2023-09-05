@@ -2,6 +2,7 @@ package com.porto.devcatalog.Porto.DTO;
 
 import com.porto.devcatalog.Porto.entities.Category;
 import com.porto.devcatalog.Porto.entities.Product;
+import jakarta.validation.constraints.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -10,10 +11,19 @@ import java.util.Set;
 
 public class ProductDTO {
     private Long id;
+
+    @Size(min = 4, max = 40, message = "Must be 4 between characters")
+    @NotBlank(message = "Camp Required")
     private String name;
+    @NotBlank(message = "Camp Required")
     private String description;
+
+    @Positive(message = "Price must be positive value")
+    @NotNull
     private Double price;
     private String imgUrl;
+
+    @PastOrPresent
     private Instant date;
 
     private List<CategoryDTO> categories = new ArrayList<>();
